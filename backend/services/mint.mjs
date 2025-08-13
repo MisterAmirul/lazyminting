@@ -1,3 +1,5 @@
+//contains lazy minting logic
+//Implements the logic for minting NFTs (called by the /mint endpoint).
 import {
   createThirdwebClient,
   Engine,
@@ -89,10 +91,21 @@ export async function mintNFT({ name, description, supplies, attributes = [], im
 
   console.log("✅ Lazy mint submitted to blockchain!");
 
-  // Return result so server.js can send it back to frontend
-  return {
-    imageUri,
-    metadataUri,
-    blockchainResult: result,
+  console.log("🔍 Raw mint result:", result);
+
+  // Return result send to server.js then send it back to frontend
+  const returnData = {
+    imageIpfs: imageUri,
+    metadataIpfs: metadataUri,
+    imageHttp: imageUri.replace("ipfs://", "https://ipfs.io/ipfs/"),
+    metadataHttp: metadataUri.replace("ipfs://", "https://ipfs.io/ipfs/"),
+    transactionHash:
+      result?.transactionHash ||
+      result?.receipt?.transactionHash ||
+      null,
   };
+
+  console.log("📦 Mint return data:", returnData);
+
+  return returnData;
 }
