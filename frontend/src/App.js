@@ -1,13 +1,20 @@
 // src/App.js
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Auth from "./pages/auth";
 import Mint from "./pages/Mint";
+import Dashboard from "./pages/dashboard";
 
-export default function App() {
+function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Mint />} />
+        <Route path="/" element={<Auth />} />
+        <Route path="/mint" element={<Mint />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
+
+export default App;

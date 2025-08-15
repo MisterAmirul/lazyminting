@@ -1,6 +1,7 @@
 //main react compnent
 //renders the nft minting form and handles user interaction 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Mint() {
   const [loading, setLoading] = useState(false);
@@ -35,8 +36,17 @@ export default function Mint() {
     setLoading(false);
   }
 
+  const navigate = useNavigate();
+
   return (
     <div style={{ padding: "20px" }}>
+      <div style={{ padding: "20px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 20, right: 20 }}>
+          <button type="button" onClick={() => navigate("/dashboard")}>
+            Dashboard
+          </button>
+        </div>
+      </div>
       <h1>Mint NFT</h1>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div>
