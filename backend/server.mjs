@@ -34,9 +34,27 @@ app.use(cors());
 
 // POST route to handle NFT minting
 app.post("/mint", upload.single("image"), async (req, res) => {
+
   try {
     const { name, description, supplies, attributes } = req.body;
     const imagePath = req.file.path; // path to uploaded image
+    const authHeader = req.headers.authorization;
+    const accessToken = authHeader?.split(' ')[1];
+
+    //get user from supabase auth
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser(accessToken);
+
+    if (userError || !user) {
+      return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+
+    const user_id = user.id;
+    console.log('User ID:', user_id);
+
+
 
     // Call mintNFT function from mint.mjs
     const result = await mintNFT({
@@ -58,9 +76,11 @@ app.post("/mint", upload.single("image"), async (req, res) => {
           image_ipfs: result.imageIpfs,
           metadata_ipfs: result.metadataIpfs,
           transaction_hash: result.transactionHash,
+          user_id: user_id,
         }
       ])
       .select();
+
 
       if (error) {
         console.error("Supabase insert error:", error);
@@ -95,6 +115,25 @@ app.post("/mint", upload.single("image"), async (req, res) => {
     console.error("❌ Minting error:", err);
     res.status(500).json({ success: false, error: err.message });
   }
+});
+
+app.get("/mint/result/:transactionHash", async (req, res) => {
+  const { transactionHash } = req.params;
+  const { data, error } = await supabase
+    .from("minted_nfts")
+    .select("*")
+    .eq("transaction_hash", transactionHash)
+    .single();
+
+  if (error || !data) {
+    return res.status(404).json({ success: false, error: "Mint result not found" });
+  }
+
+  res.json({
+    success: true,
+    db: true,
+    ...data
+  });
 });
 
 app.listen(3001, () => console.log("✅ Backend running at http://localhost:3001"));

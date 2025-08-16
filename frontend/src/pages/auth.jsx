@@ -17,9 +17,34 @@ export default function Auth() {
 
   const signInWithEmail = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setMessage(error ? error.message : "Login successful!");
+
+    //try logging in
+    const { data: signInData, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      setMessage(error.message);
+      return;
+    } 
+
+    setMessage("Login successful!");
+
+    //wait for session to be fully available
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+
+    if (sessionError || !session?.user) {
+      setMessage("Login succeeded, but no session found, try refreshing");
+      console.warn("No session after login:", sessionError);
+      return;
+    }
+
+    console.log("Logged in as:", session.user.email);
+
+    //navigate after session is ready
     navigate("/mint");
+
   };
 
   const signUpWithEmail = async (e) => {

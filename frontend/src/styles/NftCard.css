@@ -1,0 +1,140 @@
+.card-container {
+  perspective: 800px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column; 
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card {
+  position: relative;
+  width: 210px;
+  height: 332px;
+  background: #fffffd;
+  border-radius: 1em;
+  box-shadow: 0 0 6px -4px black;
+  transition: 0.5s all linear;
+  transform-style: preserve-3d;
+  user-select: none;
+  animation: 5.5s spin linear infinite;
+  margin-bottom: 40px;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 210px;
+  height: 110px;
+  transform: translate(0em, 60%) rotateX(90deg) scale(0.8);
+  border-radius: 100%;
+  background-color: #000a;
+  z-index: -10;
+  filter: blur(24px);
+}
+
+@keyframes spin {
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.back {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0.7em;
+  border-radius: 1.25em;
+  background: #191f1f;
+  overflow: hidden;
+}
+
+.red {
+  position: absolute;
+  background: #cb0323;
+  inset: 0;
+  border-radius: 100%;
+  transform-origin: center;
+  transform: scale(0.875) skewX(-22.5deg);
+}
+
+.back .text {
+  position: absolute;
+  font-size: 2em;
+  font-weight: 800;
+  color: #e4c713;
+  transform-origin: center;
+  transform: rotate(-15deg) translateX(5px);
+  text-shadow: 2px 2px #f1e8ad, 2px 1px #f1e8ad, 2px 0px #f1e8ad;
+}
+
+.front {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0.7em;
+  border-radius: 1.25em;
+  background: #191f1f;
+  overflow: hidden;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.front .red {
+  border: 0.7em solid #fffffd;
+  transform: scale(0.92, 0.875) skewX(-22.5deg);
+}
+
+.text-center {
+  position: absolute;
+  width: 12em;
+  color: white;
+  text-align: center;
+}
+
+.text-top {
+  position: absolute;
+  top: -1em;
+  left: -1.25em;
+  width: 7em;
+  color: white;
+}
+
+.text-bottom {
+  position: absolute;
+  bottom: -1em;
+  right: -1.5em;
+  width: 7em;
+  color: white;
+}
+
+/* ...existing styles... */
+
+.nft-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.nft-buttons button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  color: #fff;
+}
+
+.nft-buttons .claim-btn {
+  background: #191f1f;
+  cursor: pointer;
+}
+
+.nft-buttons .supply-btn {
+  background: #ff00e1;
+}

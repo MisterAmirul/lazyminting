@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Auth from "./pages/auth";
 import Mint from "./pages/Mint";
 import Dashboard from "./pages/dashboard";
+import NftCardPage from "./pages/NftCardPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Auth />} />
         <Route path="/mint" element={<Mint />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/nftcard" element={<NftCardPage />} />
       </Routes>
     </BrowserRouter>
   );
